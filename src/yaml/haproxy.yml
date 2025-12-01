@@ -1,0 +1,38 @@
+---
+- name: Install and configure HAProxy as reverse proxy for Apache on all Linux hosts
+  hosts: all_linux
+  become: true
+  tasks:
+    - name: Install HAProxy and Apache
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - haproxy
+        - apache2
+
+    - name: Configure Apache to listen on localhost only (127.0.0.1)
+      lineinfile:
+        path: /etc/apache2/ports.conf
+        regexp: "^Listen 8081"
+        line: "Listen 127.0.0.1:8081"
+        state: present
+      notify: Restart Apache
+
+    - name: Configure HAProxy to listen on port 8081 and forward to Apache
+      template:
+        src: /home/user/ansible/templates/haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+      notify: Restart HAProxy
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+    - name: Restart HAProxy
+      service:
+        name: haproxy
+        state: restarted
