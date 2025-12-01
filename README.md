@@ -9,15 +9,15 @@ This repository contains a structured and modular Ansible automation setup desig
 ```text
 src/
 ├── site/
-│   ├── all-linux        # Inventory group: all Linux hosts
-│   ├── site-1           # Inventory group: first site/cluster
-│   └── site-2           # Inventory group: second site/cluster
+│   ├── all-linux            # Inventory group: all Linux hosts
+│   ├── site-1               # Inventory group: first site/cluster
+│   └── site-2               # Inventory group: second site/cluster
 │
-├── templates/           # Jinja2 templates for service configs
+├── templates/               # Jinja2 templates for service configs
 │   ├── haproxy.cfg.j2
 │   └── index.html.j2
 │
-└── yaml/                # Playbooks (modular tasks)
+└── yaml/                    # Playbooks (modular tasks)
     ├── add-user.yml
     ├── apache-install.yml
     ├── dns-add-record.yml
