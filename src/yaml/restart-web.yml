@@ -1,0 +1,10 @@
+---
+- name: Reboot Web hosts
+  hosts: web
+  become: true
+  tasks:
+    - name: Reboot the Web servers
+      reboot:
+        msg: "Rebooting Web server as part of maintenance task."
+        connect_timeout: 5
+        reboot_timeout: 300
