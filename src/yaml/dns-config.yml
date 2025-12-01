@@ -1,0 +1,45 @@
+---
+- name: Configure DNS service on all Linux hosts
+  hosts: all_linux
+  become: true
+  tasks:
+    - name: Install bind9 DNS service
+      apt:
+        name: bind9
+        state: present
+        update_cache: yes
+
+    - name: Configure DNS zone for lksn2024.id
+      blockinfile:
+        path: /etc/bind/named.conf.local
+        create: yes
+        block: |
+          zone "lksn2024.id" {
+            type master;
+            file "/etc/bind/db.lksn2024.id";
+          };
+
+    - name: Create zone file for lksn2024.id
+      copy:
+        dest: /etc/bind/db.lksn2024.id
+        content: |
+          ;
+          ; BIND data file for lksn2024.id
+          ;
+          $TTL    604800
+          @       IN      SOA     ns.lksn2024.id. root.lksn2024.id. (
+                              2023102401 ; Serial
+                              604800     ; Refresh
+                              86400      ; Retry
+                              2419200    ; Expire
+                              604800 )   ; Negative Cache TTL
+          ;
+          @       IN      NS      ns.lksn2024.id.
+          ns      IN      A       127.0.0.1
+          @       IN      A       10.17.8.45
+
+    - name: Ensure bind9 service is running
+      service:
+        name: bind9
+        state: started
+        enabled: true
