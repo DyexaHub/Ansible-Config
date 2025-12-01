@@ -1,11 +1,3 @@
-#    ____________   ___________________________
-#    ___    |__  | / /__  __ \__  __ \__  ____/
-#    __  /| |_   |/ /__  / / /_  /_/ /_  __/   
-#    _  ___ |  /|  / _  /_/ /_  _, _/_  /___   
-#    /_/  |_/_/ |_/  /_____/ /_/ |_| /_____/   
-                                              
-What are you doing here?! you sneaky hacker...
-
 # Ansible Playbook Repository
 
 This repository contains a structured and modular Ansible automation setup designed for multi‑OS environments (Linux & Windows), DNS provisioning, load balancing (HAProxy), web service deployments, and environment bootstrapping at scale. Everything is separated into clean directories so you can extend, re-use, and maintain playbooks easily.
