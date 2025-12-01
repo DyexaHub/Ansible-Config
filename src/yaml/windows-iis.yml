@@ -1,0 +1,40 @@
+---
+- name: Install IIS and create webpages for users
+  hosts: windows
+  become: yes
+  vars:
+    iis_root_path: "C:\\inetpub\\wwwroot"  # Default IIS root path
+    usernames_file: "/root/usernames.txt"  # Path to text file with usernames
+
+  tasks:
+    - name: Install IIS feature
+      ansible.windows.win_feature:
+        name: Web-Server
+        state: present
+      register: iis_installed
+
+    - name: Ensure IIS default site directory exists
+      ansible.windows.win_file:
+        path: "{{ iis_root_path }}"
+        state: directory
+      when: iis_installed.changed
+
+    - name: Read usernames from file
+      ansible.builtin.slurp:
+        src: "{{ usernames_file }}"
+      register: usernames_content
+
+    - name: Create user-specific directories and index.html files
+      ansible.builtin.win_template:
+        src: "/home/user/templates/index.html.j2"  # Template path for index.html
+        dest: "{{ iis_root_path }}\\{{ item.split(',')[0] }}\\index.html"
+        vars:
+          username: "{{ item.split(',')[0] }}"
+      loop: "{{ usernames_content.content | b64decode | splitlines }}"
+      when: usernames_content.content is defined
+
+  handlers:
+    - name: Restart IIS service
+      ansible.windows.win_service:
+        name: W3SVC
+        state: restarted
