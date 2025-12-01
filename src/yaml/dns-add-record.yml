@@ -1,0 +1,36 @@
+---
+- name: Add DNS records from file if DNS service is installed
+  hosts: all_linux
+  become: true
+  vars:
+    dns_service_name: "named"  # Adjust for your DNS service (e.g., 'named' or 'bind9')
+    dns_config_file: "/etc/bind/db.example.com"  # Path to the DNS zone file
+    dns_list_file: "/root/dnslist.txt"  # Path to the file containing DNS records
+
+  tasks:
+    - name: Check if DNS service is installed
+      ansible.builtin.package_facts:
+
+    - name: Add DNS records from file
+      ansible.builtin.block:
+        - name: Read DNS records from file
+          ansible.builtin.slurp:
+            src: "{{ dns_list_file }}"
+          register: dns_records_file
+          when: "'{{ dns_service_name }}' in ansible_facts.packages"
+
+        - name: Add DNS records to config file
+          ansible.builtin.lineinfile:
+            path: "{{ dns_config_file }}"
+            line: "{{ item }}"
+            state: present
+            create: yes
+            notify: Restart DNS service
+          loop: "{{ dns_records_file.content | b64decode | splitlines }}"
+      when: "'{{ dns_service_name }}' in ansible_facts.packages"
+
+  handlers:
+    - name: Restart DNS service
+      ansible.builtin.service:
+        name: "{{ dns_service_name }}"
+        state: restarted
