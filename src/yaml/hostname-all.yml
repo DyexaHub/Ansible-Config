@@ -1,0 +1,15 @@
+---
+- name: Set hostnames on all Linux hosts
+  hosts: all_linux
+  become: true
+  tasks:
+    - name: Set hostname for each host based on topology
+      hostname:
+        name: "{{ inventory_hostname }}"
+    
+    - name: Update /etc/hosts with new hostname
+      lineinfile:
+        path: /etc/hosts
+        line: "127.0.1.1 {{ inventory_hostname }}"
+        create: yes
+        state: present
