@@ -1,0 +1,10 @@
+---
+- name: Reboot DNS hosts
+  hosts: dns
+  become: true
+  tasks:
+    - name: Reboot the DNS servers
+      reboot:
+        msg: "Rebooting DNS server as part of maintenance task."
+        connect_timeout: 5
+        reboot_timeout: 300
