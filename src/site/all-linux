@@ -1,1 +1,35 @@
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------------#
+
+# home/user/ansible/all-linux~
+# Author: drey
+# This inventory file is used to define hosts for Ansible.
+# Each line represents a host or group of hosts.
+# A script that is disabled is a script from the example obtained from the guide; we only use the necessary ones.
+
+# *The lines below were used for testing and troubleshooting. To disable a host or section, simply add '#' at the beginning of the line.*
+
+# *The following lines with '#' have been disabled manually for purposes:*
+# *The following lines without '#' have been enabled manually for purposes:*
+
+# DEFAULT WITH PASSWORDS
+#[all]
+#192.168.40.10 ansible_ssh_user=andre ansible_ssh_pass=1 ansible_become_pass=1
+#192.168.40.20 ansible_ssh_user=rose ansible_ssh_pass=1 ansible_become_pass=1
+#192.168.40.30 ansible_ssh_user=daisy ansible_ssh_pass=1 ansible_become_pass=1
+#192.168.40.40 ansible_ssh_user=lavender ansible_ssh_pass=1 ansible_become_pass=1
+#192.168.40.50 ansible_ssh_user=lotus ansible_ssh_pass=1 ansible_become_pass=1
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------#
+
+# Define the group 'all' with specific hosts
+
+# Linux
+
+[all_linux]
+serua ansible_host=192.168.40.20 ansible_hostname=rose ansible_port=2024
+sinabung ansible_host=192.168.40.30 ansible_hostname=daisy ansible_port=2024
+rinjani ansible_host=192.168.40.40 ansible_hostname=lavender ansible_port=2024
+awu ansible_host=192.168.40.50 ansible_hostname=lotus ansible_port=2024\
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------#
