@@ -1,0 +1,23 @@
+---
+- name: Install and configure Apache with custom index page
+  hosts: all_linux
+  become: true
+  tasks:
+    - name: Install Apache package
+      ansible.builtin.package:
+        name: apache2
+        state: present
+
+    - name: Start and enable Apache service
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: true
+
+    - name: Configure custom index.html
+      ansible.builtin.template:
+        src: /home/user/ansible/templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: '0644'
+      vars:
+        hostname_var: "{{ ansible_hostname }}"
