@@ -200,13 +200,6 @@ Follow the current directory structure to keep everything clean.
 
 ## 📜 License
 
-MIT or your preferred open-source license.
+MIT
 
 ---
-
-If you want, I can also generate:
-
-* Full variable structure example (group_vars/host_vars)
-* HAProxy sample topology diagram
-* DNS architecture reference
-* CI/CD pipeline for linting + testing playbooks
